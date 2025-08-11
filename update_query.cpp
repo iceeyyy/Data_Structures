@@ -17,6 +17,24 @@ void buildTree(int i ,int l ,int r,vector<int>& SegmentTree, vector<int>& input)
     
 }
 
+void updateQuery(int i, int l, int r, vector<int>& SegmentTree, vector<int>& input, int idx, int value) {
+
+    if(l==r){
+        SegmentTree[i]=value;
+        return;
+    }
+
+    int mid=(l+r)/2;
+
+    if(idx<=mid){ //left side 
+        updateQuery(2*i+1,l,mid,SegmentTree,input,idx,value);
+    }
+
+    updateQuery(2*i+2,mid+1,r,SegmentTree,input,idx,value);
+
+    SegmentTree[i] = SegmentTree[2*i+1] + SegmentTree[2*i+2];
+}
+
 int main(){
     vector<int> input = {1,2,56,7};
     int n = input.size();
@@ -28,6 +46,15 @@ int main(){
     for(auto it:SegmentTree){
         cout<<it<<" ";
     }
+    cout<<"---- Segment Tree Built Successfully"<<endl;
+
+    updateQuery(0,0,n-1,SegmentTree,input,1,40);
+
+    for(auto it:SegmentTree){
+        cout<<it<<" ";
+    }
+    cout<<"---- Updated Segment Tree"<<endl;
+
     
     return 0;
 }
